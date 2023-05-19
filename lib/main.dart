@@ -8,15 +8,16 @@ void main() {
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
-  final navigatorKey = GlobalKey<NavigatorState>();
+  // final navigatorKey = GlobalKey<NavigatorState>();
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: navigatorKey,
+      // navigatorKey: navigatorKey,
       title: 'Flutter Demo',
       theme: ThemeData(
+        fontFamily: 'Pacifico-Regular',
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
@@ -45,61 +46,58 @@ class _Screen1State extends State<Screen1> {
           child: Form(
             key: _formKey,
             child: Card(
-              child: Container(
-                width: 350,
-                child: Column(
-                  children: [
-                    Text("Welcome to Tic Tac Toe Game", style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: Colors.deepPurple),),
-                    SizedBox(height: 20,),
-                    TextFormField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      controller: user1Controller,
-                      decoration: InputDecoration(
-                        hintText: "Enter user1 name",
-                        labelText: "User 1",
+              child: Column(
+                children: [
+                  Text("Welcome to Tic Tac Toe Game", style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: Colors.deepPurple),),
+                  SizedBox(height: 20,),
+                  TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    controller: user1Controller,
+                    decoration: InputDecoration(
+                      hintText: "Enter user1 name",
+                      labelText: "User 1",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      )
+                    ),
+                    validator: (value){
+                      if(value == null || value.isEmpty){
+                        return "Please enter the name";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20,),
+                  TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    controller: user2Controller,
+                    decoration: InputDecoration(
+                      hintText: "Enter user2 name",
+                      labelText: "User 2",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         )
-                      ),
-                      validator: (value){
-                        if(value == null || value.isEmpty){
-                          return "Please enter the name";
-                        }
-                        return null;
-                      },
                     ),
-                    SizedBox(height: 20,),
-                    TextFormField(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      controller: user2Controller,
-                      decoration: InputDecoration(
-                        hintText: "Enter user2 name",
-                        labelText: "User 2",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          )
-                      ),
-                      validator: (value){
-                        if(value == null || value.isEmpty){
-                          return "Please enter the name";
+                    validator: (value){
+                      if(value == null || value.isEmpty){
+                        return "Please enter the name";
+                      }
+                      return null;
+                    },
+                  ),
+                  Spacer(),
+                  ElevatedButton(
+                      onPressed: (){
+                        if(_formKey.currentState!.validate()){
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyHomePage(
+                            user1Name: user1Controller.text,
+                            user2Name: user2Controller.text,
+                          )));
                         }
-                        return null;
                       },
-                    ),
-                    Spacer(),
-                    ElevatedButton(
-                        onPressed: (){
-                          if(_formKey.currentState!.validate()){
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyHomePage(
-                              user1Name: user1Controller.text,
-                              user2Name: user2Controller.text,
-                            )));
-                          }
-                        },
-                        child: Text("SUBMIT"),
-                    )
-                  ],
-                ),
+                      child: Text("SUBMIT"),
+                  )
+                ],
               ),
             ),
           ),
