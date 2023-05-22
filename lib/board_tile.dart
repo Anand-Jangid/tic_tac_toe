@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tic_tac_toe/tile_state.dart';
+import 'package:tic_tac_toe/models/tile_state.dart';
 
 class BoardTile extends StatelessWidget {
   final double dimension;
@@ -10,7 +10,7 @@ class BoardTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: dimension,
       width: dimension,
       child: MaterialButton(

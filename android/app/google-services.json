@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "3295555883",
+    "project_id": "tictactoeflutter-52c29",
+    "storage_bucket": "tictactoeflutter-52c29.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:3295555883:android:f15748b07955b35cc9956e",
+        "android_client_info": {
+          "package_name": "com.example.tic_tac_toe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "3295555883-kjghj30hb2e8cnm2jb9q2q5cl9eummdr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tic_tac_toe",
+            "certificate_hash": "2a790e2a04f98694695567c9e2f2b609ac07f908"
+          }
+        },
+        {
+          "client_id": "3295555883-704jq0e3m513akpf9aadc29qjf1675cg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnHiWRwbOce8g7JBJPmMSyU022Mi3mc7o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "3295555883-704jq0e3m513akpf9aadc29qjf1675cg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
