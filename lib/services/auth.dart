@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 
 class Auth{
@@ -63,5 +64,24 @@ class Auth{
     );
 
     await _firebaseAuth.signInWithCredential(credential);
+  }
+
+  Future<void> resetPassword({
+    required String email
+}) async{
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
+
+  Future<void> signInWithGoogle() async{
+    GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken
+    );
+
+    UserCredential user = await _firebaseAuth.signInWithCredential(credential);
   }
 }

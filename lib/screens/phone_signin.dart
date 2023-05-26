@@ -12,6 +12,7 @@ class PhoneSignin extends StatefulWidget {
 
 class _PhoneSigninState extends State<PhoneSignin> {
 
+  bool _underProcess = false;
   final _formKey = GlobalKey<FormState>();
   String errorMessage = '';
 
@@ -59,7 +60,9 @@ class _PhoneSigninState extends State<PhoneSignin> {
   }
 
   Widget _submitButton(){
-    return ElevatedButton(
+    return (_underProcess)
+      ? CircularProgressIndicator()
+      : ElevatedButton(
         onPressed: (){
           if(_formKey.currentState!.validate()){
             _createUserWithPhoneNumber(phoneNumber: _phoneController.text);
@@ -81,7 +84,13 @@ class _PhoneSigninState extends State<PhoneSignin> {
 
   Future<void> _createUserWithPhoneNumber({required String phoneNumber}) async{
     try{
+      setState(() {
+        _underProcess = true;
+      });
       await Auth().createUserWithPhoneNumber(phoneNumber: '+91$phoneNumber', callbackCodeSent:  callbackCodesent);
+      setState(() {
+        _underProcess = false;
+      });
     }on FirebaseAuthException catch(e){
       setState(() {
         errorMessage = e.message ?? '';
@@ -92,8 +101,10 @@ class _PhoneSigninState extends State<PhoneSignin> {
         elevation: 4,
         showCloseIcon: true,
         closeIconColor: Colors.deepPurple,
-      ),
-      );
+      ));
+      setState(() {
+        _underProcess = false;
+      });
     }
   }
 

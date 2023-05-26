@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tic_tac_toe/screens/forgot_password_page.dart';
 import 'package:tic_tac_toe/screens/phone_signin.dart';
 import 'package:tic_tac_toe/services/auth.dart';
 
@@ -12,6 +13,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
+  bool _underProgress = false;
   String? errorMessage = '';
   bool isLogin = true;
   final _formKey = GlobalKey<FormState>();
@@ -20,12 +22,18 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> signInWithEmailAndPassword() async{
     try{
+      setState(() {
+        _underProgress = true;
+      });
       if(_formKey.currentState!.validate()){
         await Auth().signInWithEmailAndPassword(
           email: _controllerEmail.text,
           password: _controllerPassword.text,
         );
       }
+      setState(() {
+        _underProgress = false;
+      });
     }on FirebaseAuthException catch(e){
       setState(() {
         errorMessage = e.message;
@@ -36,20 +44,55 @@ class _LoginPageState extends State<LoginPage> {
         elevation: 4,
         showCloseIcon: true,
         closeIconColor: Colors.deepPurple,
-      ),
-      );
+      ));
+      setState(() {
+        _underProgress = false;
+      });
+    }
+  }
+
+  Future<void> signInWithGoogle() async{
+    try{
+      setState(() {
+        _underProgress = true;
+      });
+      await Auth().signInWithGoogle();
+      setState(() {
+        _underProgress = false;
+      });
+      print('12345');
+    }on FirebaseAuthException catch(e){
+      setState(() {
+        errorMessage = e.message;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(errorMessage ?? 'Something went Wrong'),
+        backgroundColor: Colors.deepPurple.shade200,
+        elevation: 4,
+        showCloseIcon: true,
+        closeIconColor: Colors.deepPurple,
+      ));
+      setState(() {
+        _underProgress = false;
+      });
     }
   }
 
 
   Future<void> createUserWithEmailAndPassword() async{
     try{
+      setState(() {
+        _underProgress = true;
+      });
       if(_formKey.currentState!.validate()){
         await Auth().createUserWithEmailAndPassword(
           email: _controllerEmail.text,
           password: _controllerPassword.text,
         );
       }
+      setState(() {
+        _underProgress = false;
+      });
     }on FirebaseAuthException catch(e){
       setState(() {
         errorMessage = e.message;
@@ -60,8 +103,10 @@ class _LoginPageState extends State<LoginPage> {
         elevation: 4,
         showCloseIcon: true,
         closeIconColor: Colors.deepPurple,
-      ),
-      );
+      ),);
+      setState(() {
+        _underProgress = false;
+      });
     }
   }
 
@@ -112,7 +157,9 @@ class _LoginPageState extends State<LoginPage> {
   // }
 
   Widget _submitButton(){
-    return ElevatedButton(
+    return (_underProgress)
+        ? CircularProgressIndicator()
+        : ElevatedButton(
         onPressed: isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
         child: Text(isLogin ? 'Login' : 'Register')
     );
@@ -153,7 +200,6 @@ class _LoginPageState extends State<LoginPage> {
         const SizedBox(width: 10,),
         InkWell(
           onTap: (){
-
           },
           child: const CircleAvatar(
             backgroundColor: Colors.white,
@@ -163,8 +209,8 @@ class _LoginPageState extends State<LoginPage> {
         ),
         const SizedBox(width: 10,),
         InkWell(
-          onTap: (){
-
+          onTap: ()async{
+            await signInWithGoogle();
           },
           child: const CircleAvatar(
             backgroundColor: Colors.white,
@@ -233,6 +279,12 @@ class _LoginPageState extends State<LoginPage> {
                   // _errorMessage(),
                   _submitButton(),
                   _loginOrRegistrationButton(),
+                  TextButton(
+                      onPressed: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => ForgotPasswordPage()));
+                      },
+                      child: Text('Forgot Password')
+                  ),
                   const SizedBox(height: 20,),
                   _loginOptionsButtons()
                 ],

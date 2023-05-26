@@ -1,8 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:tic_tac_toe/screens/home_page.dart';
 import 'package:tic_tac_toe/screens/score_card.dart';
 import 'package:tic_tac_toe/screens/play_page.dart';
-
+import 'package:share_plus/share_plus.dart';
 import '../board_tile.dart';
 import '../models/tile_state.dart';
 
@@ -17,9 +20,11 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
+
+  late Uint8List _imageFile;
   var _boardState = List.filled(9, TileState.EMPTY);
   var _currentTurn = TileState.CROSS;
-
+  final _screenShotController = ScreenshotController();
   int user1Won = 0;
   int user2Won = 0;
   int draw = 0;
@@ -65,29 +70,38 @@ class _GamePageState extends State<GamePage> {
               const SizedBox(
                 height: 80,
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(0.0),
-                    child: Stack(
-                      children: [
-                        Image.asset("assets/images/board.png"),
-                        _boardTiles(),
-                      ],
-                    ),
-                  )
-                ],
+              Screenshot(
+                controller: _screenShotController,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(0.0),
+                      child: Stack(
+                        children: [
+                          Image.asset("assets/images/board.png"),
+                          _boardTiles(),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 20,
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => const HomePage()));
-                  },
-                  child: const Text("Quit Game"))
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) => const HomePage()));
+                      },
+                      child: const Text("Quit Game")),
+                  // _screenShotButton(),
+                ],
+              )
             ],
           ),
         ),
@@ -251,4 +265,16 @@ class _GamePageState extends State<GamePage> {
       _currentTurn = TileState.CROSS;
     });
   }
+
+//   Widget _screenShotButton(){
+//     return FloatingActionButton.extended(
+//       label: Text("Take Screenshot"),
+//       onPressed: (){}
+//     );
+//   }
+//
+//   void _takeScreenShot() async{
+//     final imageFile = await _screenShotController.capture();
+//     _imageFile = imageFile!;
+//   }
 }
